@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import { useAlert } from "react-alert";
+import { toast } from "react-toastify";
 
 import {
 	clearErrors,
@@ -11,6 +12,7 @@ import {
 } from "../../redux/actions/productAction";
 import ReviewCard from "./ReviewCard.jsx";
 import Loader from "../layout/Loader/Loader";
+import MetaData from "../layout/MetaData";
 
 import "./ProductDetails.css";
 
@@ -25,7 +27,8 @@ const ProductDetails = () => {
 
 	useEffect(() => {
 		if (error) {
-			alert.error(error);
+			toast.error(error);
+			// alert.error(error);
 			dispatch(clearErrors());
 		}
 
@@ -47,6 +50,7 @@ const ProductDetails = () => {
 				<Loader />
 			) : (
 				<>
+					<MetaData title={`${product.name} -- ECOMMERCE.`} />
 					<div className="ProductDetails">
 						<div>
 							<Carousel>

@@ -8,7 +8,7 @@ import {
 	PRODUCT_DETAILS_FAIL,
 } from "../constants/productConstants.js";
 
-const productReducer = (state = { products: [] }, action) => {
+const productReducer = (state = { products: [], failed: false }, action) => {
 	switch (action.type) {
 		case ALL_PRODUCT_REQUEST:
 			return {
@@ -21,12 +21,15 @@ const productReducer = (state = { products: [] }, action) => {
 				products: action.payload.products,
 				productsCount: action.payload.productsCount,
 				resultPerPage: action.payload.resultPerPage,
+				filteredProductsCount: action.payload.filteredProductsCount,
+				failed: false,
 			};
 
 		case ALL_PRODUCT_FAIL:
 			return {
 				loading: false,
 				error: action.payload,
+				failed: true,
 			};
 
 		case CLEAR_ERRORS:
@@ -40,7 +43,10 @@ const productReducer = (state = { products: [] }, action) => {
 	}
 };
 
-const productDetailsReducer = (state = { product: {} }, action) => {
+const productDetailsReducer = (
+	state = { product: {}, failed: false },
+	action
+) => {
 	switch (action.type) {
 		case PRODUCT_DETAILS_REQUEST:
 			return {
@@ -51,11 +57,13 @@ const productDetailsReducer = (state = { product: {} }, action) => {
 			return {
 				loading: false,
 				product: action.payload,
+				failed: false,
 			};
 		case PRODUCT_DETAILS_FAIL:
 			return {
 				loading: false,
 				error: action.payload,
+				failed: true,
 			};
 		case CLEAR_ERRORS:
 			return {

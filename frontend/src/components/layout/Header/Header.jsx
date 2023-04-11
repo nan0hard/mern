@@ -42,7 +42,7 @@ const options = {
 	profileIcon: true,
 	searchIconUrl: "/search",
 	cartIconUrl: "/cart",
-	profileIconUrl: "/profile",
+	profileIconUrl: "/signIn",
 };
 
 const Header = () => {
