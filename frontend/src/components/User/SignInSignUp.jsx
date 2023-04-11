@@ -16,6 +16,10 @@ const SignInSignUp = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	const { loading, error, isAuthenticated } = useSelector(
+		(state) => state.user
+	);
+
 	const signInTab = useRef(null);
 	const signUpTab = useRef(null);
 	const switcherTab = useRef(null);
@@ -27,14 +31,9 @@ const SignInSignUp = () => {
 		name: "",
 		email: "",
 		password: "",
-		confirmPassword: "",
 	});
 
-	const { loading, error, isAuthenticated } = useSelector(
-		(state) => state.user
-	);
-
-	const { name, email, password, confirmPassword } = user;
+	const { name, email, password } = user;
 
 	const [avatar, setAvatar] = useState();
 	const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
@@ -52,13 +51,12 @@ const SignInSignUp = () => {
 		myForm.set("name", name);
 		myForm.set("email", email);
 		myForm.set("password", password);
-		myForm.set("confirmPassword", confirmPassword);
 		myForm.set("avatar", avatar);
 		dispatch(signup(myForm));
 	};
 
 	const signUpDataChange = (e) => {
-		if (e.target.value === "avatar") {
+		if (e.target.name === "avatar") {
 			const reader = new FileReader();
 
 			reader.onload = () => {
@@ -67,7 +65,6 @@ const SignInSignUp = () => {
 					setAvatar(reader.result);
 				}
 			};
-
 			reader.readAsDataURL(e.target.files[0]);
 		} else {
 			setUser({ ...user, [e.target.name]: e.target.value });
@@ -159,6 +156,8 @@ const SignInSignUp = () => {
 									<input
 										type="text"
 										placeholder="Enter your full name"
+										required
+										name="name"
 										value={name}
 										onChange={signUpDataChange}
 									/>
@@ -185,16 +184,17 @@ const SignInSignUp = () => {
 										onChange={signUpDataChange}
 									/>
 								</div>
-								<div className="signUpPassword">
+								{/* <div className="signUpPassword">
 									<PasswordIcon />
 									<input
 										type="password"
 										placeholder="Re-enter your Password"
 										required
+										name="confirmPassword"
 										value={confirmPassword}
 										onChange={signUpDataChange}
 									/>
-								</div>
+								</div> */}
 
 								<div id="signUpImage">
 									<img src={avatarPreview} alt="Avatar Preview" />

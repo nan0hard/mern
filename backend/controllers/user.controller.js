@@ -1,21 +1,28 @@
+import crypto from "crypto";
+import { v2 as cloudinary } from "cloudinary";
+
 import asyncErrorWrapper from "../middleware/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import User from "../mongoDB/models/userModel.js";
 import sendToken from "../utils/jwtToken.js";
 import sendEmail from "../utils/sendEmail.js";
-import crypto from "crypto";
 
 // sign Up
 const signUp = asyncErrorWrapper(async (req, res, next) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, avatar } = req.body;
+	const myCloud = await cloudinary.uploader.upload(avatar, {
+		folder: "avatars",
+		width: 150,
+		crop: "scale",
+	});
 
 	const user = await User.create({
 		name,
 		email,
 		password,
 		avatar: {
-			public_id: "Dummy Public Id",
-			url: "Dummy URL",
+			public_id: myCloud.public_id,
+			url: myCloud.secure_url,
 		},
 	});
 
