@@ -9,24 +9,33 @@ import Footer from "./components/layout/Footer/Footer";
 import ProductDetails from "./components/Product/ProductDetails.jsx";
 import Products from "./components/Product/Products.jsx";
 import Search from "./components/Product/Search.jsx";
+import store from "./store.js";
+import { loadUser } from "./redux/actions/userAction";
+import FloatingActions from "./components/layout/FloatingActions/FloatingActions.jsx";
 
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import SignInSignUp from "./components/User/SignInSignUp";
+import { useSelector } from "react-redux";
 
 function App() {
+	const { isAuthenticated, user } = useSelector((state) => state.user);
+
 	React.useEffect(() => {
 		WebFont.load({
 			google: {
 				families: ["Roboto", "Droid Sans", "Chilanka"],
 			},
 		});
+
+		store.dispatch(loadUser());
 	}, []);
 
 	return (
 		<Router>
 			<ToastContainer />
 			<Header />
+			{isAuthenticated && <FloatingActions user={user} />}
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/product/:id" element={<ProductDetails />} />
