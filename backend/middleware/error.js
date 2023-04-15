@@ -12,7 +12,9 @@ const errorMiddleware = (err, req, res, next) => {
 
 	// Mongoose duplicate error
 	if (err.code === 11000) {
-		const message = `Duplicate ${Object.keys(err.keyValue)} entered.`;
+		const message = `${Object.keys(
+			err.keyValue
+		)} already exist! Please use a different ${Object.keys(err.keyValue)}`;
 		err = new ErrorHandler(message, 400);
 	}
 

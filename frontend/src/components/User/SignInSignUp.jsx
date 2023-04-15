@@ -6,6 +6,8 @@ import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { clearErrors, signin, signup } from "../../redux/actions/userAction.js";
 import Loader from "../layout/Loader/Loader";
@@ -26,6 +28,8 @@ const SignInSignUp = () => {
 
 	const [signInEmail, setSignInEmail] = useState("");
 	const [signInPassword, setSignInPassword] = useState("");
+	const [visibility, setVisibility] = useState(false);
+	const [clicked, setClicked] = useState(false);
 
 	const [user, setUser] = useState({
 		name: "",
@@ -78,7 +82,7 @@ const SignInSignUp = () => {
 		}
 
 		if (isAuthenticated) {
-			navigate("/account");
+			navigate("/profile");
 		}
 	}, [dispatch, error, isAuthenticated, navigate]);
 
@@ -176,25 +180,26 @@ const SignInSignUp = () => {
 								<div className="signUpPassword">
 									<PasswordIcon />
 									<input
-										type="password"
+										type={visibility ? "text" : "password"}
 										placeholder="Enter your Password"
 										required
 										name="password"
 										value={password}
 										onChange={signUpDataChange}
+										onFocus={() => setClicked(true)}
+										onBlur={() => setClicked(!clicked)}
 									/>
+									{password.length > 0 ? (
+										<div
+											className="eyeIcon"
+											onClick={() => setVisibility(!visibility)}
+										>
+											{visibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
+										</div>
+									) : (
+										<></>
+									)}
 								</div>
-								{/* <div className="signUpPassword">
-									<PasswordIcon />
-									<input
-										type="password"
-										placeholder="Re-enter your Password"
-										required
-										name="confirmPassword"
-										value={confirmPassword}
-										onChange={signUpDataChange}
-									/>
-								</div> */}
 
 								<div id="signUpImage">
 									<img src={avatarPreview} alt="Avatar Preview" />
@@ -209,7 +214,7 @@ const SignInSignUp = () => {
 									type="submit"
 									value="Sign Up"
 									className="signUpBtn"
-									// disabled={laoding ? true : false}
+									disabled={loading ? true : false}
 								/>
 							</form>
 						</div>

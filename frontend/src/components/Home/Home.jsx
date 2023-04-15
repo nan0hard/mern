@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from "react";
 import { CgMouse } from "react-icons/cg";
-// import { useAlert } from "react-alert";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
